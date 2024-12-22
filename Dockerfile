@@ -6,6 +6,7 @@ COPY pom.xml ./
 COPY src ./scr
 
 USER root
+RUN chmod +x /usr/bin/mvn
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
