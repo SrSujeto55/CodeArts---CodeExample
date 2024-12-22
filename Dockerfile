@@ -1,23 +1,34 @@
-FROM maven:3.8.3-openjdk-17 AS build
+# Usar una imagen base de JDK 17 Slim
+FROM openjdk:17-slim
 
+# Instalar dependencias necesarias
+RUN apt-get update && apt-get install -y \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Descargar e instalar Maven
+RUN wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -P /tmp \
+    && tar -xvzf /tmp/apache-maven-3.8.6-bin.tar.gz -C /opt \
+    && rm /tmp/apache-maven-3.8.6-bin.tar.gz
+
+# Establecer variables de entorno para Maven
+ENV MAVEN_HOME=/opt/apache-maven-3.8.6
+ENV PATH=$MAVEN_HOME/bin:$PATH
+
+# Verificar la instalación de Maven
+RUN mvn -v
+
+# Establecer el directorio de trabajo
 WORKDIR /app
 
-COPY pom.xml ./
-COPY src ./scr
+# Copiar el archivo pom.xml y el código fuente a la imagen
+COPY . /app
 
-USER root
-RUN chmod +x /usr/bin/mvn
-RUN mvn clean package -DskipTests
+# Ejecutar Maven para construir el proyecto
+RUN mvn clean install
 
-FROM openjdk:17-jdk-slim
-
-WORKDIR /app
-
-COPY --from=build /app/target/*.jar codearts.jar
-
-EXPOSE 8080
-
-CMD ["java", "-jar", "codearts.jar"]
+# Comando por defecto
+CMD ["mvn", "spring-boot:run"]
 
 
 
