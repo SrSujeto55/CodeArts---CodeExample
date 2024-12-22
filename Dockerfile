@@ -1,13 +1,11 @@
-# Usar una imagen base de JDK 17 Slim
-FROM openjdk:17-slim
+# Usar una imagen base de JDK 17 más completa
+FROM openjdk:17
 
-# Instalar Maven y dependencias necesarias
-RUN apt-get update && apt-get install -y \
-    maven \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar Maven
+RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
 # Verificar la instalación de Maven
-RUN sudo mvn -v
+RUN mvn -v
 
 # Establecer el directorio de trabajo
 WORKDIR /app
@@ -16,12 +14,7 @@ WORKDIR /app
 COPY . /app
 
 # Ejecutar Maven para construir el proyecto
-RUN sudo mvn clean install
+RUN mvn clean install
 
 # Comando por defecto
 CMD ["mvn", "spring-boot:run"]
-
-
-
-
-
