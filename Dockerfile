@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Verificar la instalación de Maven
-RUN mvn -v
+RUN sudo mvn -v
 
 # Establecer el directorio de trabajo
 WORKDIR /app
@@ -16,7 +16,7 @@ WORKDIR /app
 COPY . /app
 
 # Ejecutar Maven para construir el proyecto
-RUN mvn clean install
+RUN sudo mvn clean install
 
 # Comando por defecto
 CMD ["mvn", "spring-boot:run"]
