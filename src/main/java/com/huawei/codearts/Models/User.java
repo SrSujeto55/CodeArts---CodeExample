@@ -24,6 +24,9 @@ public class User {
     @Setter @Getter
     private String bloodtype;
 
+    @Setter @Getter
+    private Double userscore;
+
     private User() {}
 
     public User(String name, int age, String bloodtype){
@@ -34,7 +37,7 @@ public class User {
 
     @Override
     public String toString(){
-        return "User : { id: " + this.Id + ", name: " + name + ", age: " + age + ", bloodType: " + bloodtype;  
+        return "User : { id: " + this.Id + ", name: " + this.name + ", age: " + this.age + ", bloodType: " + this.bloodtype + ", userScore: " + this.userscore;  
     }
 
 }
